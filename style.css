@@ -160,6 +160,16 @@ h1 {
   list-style: disc;
 }
 
+.sub-items a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sub-items a:hover,
+.sub-items a:focus-visible {
+  text-decoration: underline;
+}
+
 @media (max-width: 640px) {
   .page-shell {
     width: min(100% - 1rem, 1200px);

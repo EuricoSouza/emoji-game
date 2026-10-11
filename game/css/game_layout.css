@@ -1,0 +1,32 @@
+html, body {
+margin: 0;
+}
+#html{
+    height: 100%;
+    width: 100%;
+}
+
+#canvas1 {
+    box-sizing: border-box;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: green;
+}
+
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src:  url(../fonts/NotoColorEmoji.ttf),local('NotoColorEmoji'), format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'EmojiOne';
+        src:  url(../fonts/EmojiOneColor-SVGinOT.ttf),local('EmojiOne'), format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        }

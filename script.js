@@ -9,7 +9,7 @@ function drawEmoji(x, y, size, emoji, alpha = 1) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.globalAlpha = alpha;
-  ctx.font = `${size}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+  ctx.font = `${size}px "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
   ctx.fillText(emoji, x, y);
   ctx.restore();
 }
@@ -57,9 +57,9 @@ function drawBackground(time) {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   const sky = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
-  sky.addColorStop(0, '#7ecbff');
-  sky.addColorStop(0.6, '#9bd7ff');
-  sky.addColorStop(1, '#bfe7ff');
+  sky.addColorStop(0, '#3e7ec9');
+  sky.addColorStop(0.55, '#2f6ab2');
+  sky.addColorStop(1, '#234d8c');
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
@@ -67,8 +67,8 @@ function drawBackground(time) {
   const sunY = window.innerHeight * 0.18;
   const sunGlow = ctx.createRadialGradient(sunX, sunY, 15, sunX, sunY, 130);
   sunGlow.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-  sunGlow.addColorStop(0.2, 'rgba(255, 212, 59, 0.85)');
-  sunGlow.addColorStop(1, 'rgba(255, 212, 59, 0)');
+  sunGlow.addColorStop(0.2, 'rgba(247, 213, 74, 0.8)');
+  sunGlow.addColorStop(1, 'rgba(247, 213, 74, 0)');
   ctx.fillStyle = sunGlow;
   ctx.beginPath();
   ctx.arc(sunX, sunY, 130, 0, Math.PI * 2);

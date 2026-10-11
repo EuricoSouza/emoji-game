@@ -1,7 +1,7 @@
 :root {
-  --sky-blue: #79c8ff;
-  --sky-deep: #4ea5ec;
-  --sun-yellow: #ffd43b;
+  --sky-blue: #4ea5ec;
+  --sky-deep: #2d6db5;
+  --sun-yellow: #f7d54a;
   --ink: #12314d;
   --panel: rgba(255, 255, 255, 0.14);
   --panel-border: rgba(255, 255, 255, 0.2);
@@ -20,7 +20,7 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(180deg, var(--sky-blue) 0%, #9ed9ff 100%);
+  background: linear-gradient(180deg, var(--sky-blue) 0%, #3d7dc0 100%);
   color: var(--ink);
   overflow-x: hidden;
 }
@@ -100,7 +100,8 @@ h1 {
   font-size: clamp(3rem, 7vw, 7rem);
   line-height: 0.9;
   color: var(--sun-yellow);
-  text-shadow: 0 6px 18px rgba(52, 92, 148, 0.2);
+  font-weight: 900;
+  text-shadow: 0 6px 18px rgba(37, 72, 126, 0.25), 0 2px 0 rgba(0, 0, 0, 0.15);
   letter-spacing: -0.06em;
   animation: titlePulse 2.8s ease-in-out infinite;
   transform-origin: center;
@@ -145,6 +146,18 @@ h1 {
   margin: 0;
   color: var(--text-soft);
   line-height: 1.6;
+}
+
+.sub-items {
+  margin: 0.9rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--ink);
+  line-height: 1.8;
+  font-weight: 700;
+}
+
+.sub-items li {
+  list-style: disc;
 }
 
 @media (max-width: 640px) {

@@ -25,7 +25,8 @@ function resizeCanvas() {
   clouds.length = 0;
 
   const starCount = Math.max(80, Math.floor(window.innerWidth / 12));
-  const starEmoji = ['⭐', '✨', '🌟'];
+  const starEmoji = ['⭐', '🌟', '✳', '·', '✦', '✫', '*', '˚', '+', 
+    '🟉', '🟄', '✴', '🟎' , '✹', '⚝','❂', '✨', '✡', '💫','✸'];
   for (let i = 0; i < starCount; i += 1) {
     stars.push({
       x: Math.random() * window.innerWidth,
@@ -38,7 +39,7 @@ function resizeCanvas() {
     });
   }
 
-  const cloudEmoji = ['☁️', '⛅', '🌤️'];
+  const cloudEmoji = ['☁️', '⛅', '🌤️', '☁', '🌥', '🌧', '🌫','🌪'];
   const cloudCount = 6;
   for (let i = 0; i < cloudCount; i += 1) {
     clouds.push({
@@ -58,8 +59,8 @@ function drawBackground(time) {
 
   const sky = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
   sky.addColorStop(0, '#3e7ec9');
-  sky.addColorStop(0.55, '#2f6ab2');
-  sky.addColorStop(1, '#234d8c');
+  sky.addColorStop(0.55, '#1f5597');
+  sky.addColorStop(1, '#062a5f');
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
@@ -104,7 +105,41 @@ function animate(time) {
   drawBackground(time);
   requestAnimationFrame(animate);
 }
+function animateHeroCharacter() {
+  const character = document.querySelector('.hero-mini');
+  if (!character) return;
+
+  const face = character.querySelector('.hero-head');
+  const leftHand = character.querySelector('.hero-arm-left');
+  const rightHand = character.querySelector('.hero-arm-right');
+  const leftArm = character.querySelector('.hero-limb-left');
+  const rightArm = character.querySelector('.hero-limb-right');
+  const poses = [
+    { face: '🙂', left: '🤛', right: '🤛', leftHandAngle: -22, rightHandAngle: -22, leftArmAngle: 42, rightArmAngle: -42 },
+    { face: '😎', left: '✋', right: '👍', leftHandAngle: -38, rightHandAngle: 12, leftArmAngle: 52, rightArmAngle: -26 },
+    { face: '😮', left: '🤚', right: '✌️', leftHandAngle: -5, rightHandAngle: 24, leftArmAngle: 28, rightArmAngle: -48 },
+    { face: '😜', left: '👋', right: '🤟', leftHandAngle: -48, rightHandAngle: 36, leftArmAngle: 58, rightArmAngle: -56 },
+    { face: '😍', left: '🤛', right: '✋', leftHandAngle: -16, rightHandAngle: 18, leftArmAngle: 36, rightArmAngle: -30 },
+  ];
+  let poseIndex = 0;
+
+  function showNextPose() {
+    const pose = poses[poseIndex];
+    face.textContent = pose.face;
+    leftHand.textContent = pose.left;
+    rightHand.textContent = pose.right;
+    leftHand.style.transform = `rotate(${pose.leftHandAngle}deg)`;
+    rightHand.style.transform = `scaleX(-1) rotate(${pose.rightHandAngle}deg)`;
+    leftArm.style.transform = `rotate(${pose.leftArmAngle}deg)`;
+    rightArm.style.transform = `rotate(${pose.rightArmAngle}deg)`;
+    poseIndex = (poseIndex + 1) % poses.length;
+  }
+
+  showNextPose();
+  window.setInterval(showNextPose, 1800);
+}
 
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+animateHeroCharacter();
 requestAnimationFrame(animate);

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#36c95a" />
+    <title>Scene 1 | Em😊jigame</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #36c95a;
+        position: relative;
+      }
+
+      #scene-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .ghost {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+        font-size: 2rem;
+        line-height: 1;
+        pointer-events: none;
+        filter: drop-shadow(0 3px 6px rgba(17, 44, 81, 0.22));
+        will-change: left, top;
+      }
+
+      .hero-mini {
+        position: absolute;
+        top: 0.8rem;
+        left: 0.75rem;
+        z-index: 2;
+        width: 75px;
+        height: 70px;
+        pointer-events: none;
+        font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+        filter: drop-shadow(0 12px 16px rgba(17, 44, 81, 0.22));
+        animation: heroFloat 2.8s ease-in-out infinite;
+      }
+
+      .demon-mini {
+        top: 0;
+        left: 0;
+        z-index: 3;
+        animation: demonWalk 0.42s ease-in-out infinite alternate;
+        transition: left 0.24s linear, top 0.24s linear;
+      }
+
+      .demon-mini.is-exiting {
+        animation: none;
+        transition: left 0.36s ease-in, top 0.36s ease-in;
+      }
+
+      .hero-mini-art {
+        position: relative;
+        width: 150px;
+        height: 140px;
+        transform: scale(0.5);
+        transform-origin: top left;
+      }
+
+      .hero-mini span {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+
+      .hero-head {
+        left: 46px;
+        top: 6px;
+        font-size: 3rem;
+        z-index: 2;
+        transition: transform 0.3s ease;
+      }
+
+      .hero-arm {
+        top: 38px;
+        font-size: 2.1rem;
+        z-index: 3;
+        transition: transform 0.45s ease;
+      }
+
+      .hero-hand-left {
+        top: 58px;
+        left: -1px;
+        transform: rotate(-22deg);
+      }
+
+      .hero-hand-right {
+        top: 58px;
+        right: -1px;
+        transform: scaleX(-1) rotate(-22deg);
+      }
+
+      .hero-limb {
+        top: 47px;
+        font-size: 2.5rem;
+        color: #f7d54a;
+        transform-origin: top center;
+        z-index: 2;
+        transition: transform 0.45s ease;
+      }
+
+      .hero-limb-left {
+        left: 46px;
+        transform: rotate(42deg);
+      }
+
+      .hero-limb-right {
+        right: 46px;
+        transform: rotate(-42deg);
+      }
+
+      .hero-body {
+        left: 55px;
+        top: 40px;
+        font-size: 2.5rem;
+        color: #5f666e;
+        z-index: 1;
+        transform: rotate(2deg);
+      }
+
+      .hero-hips {
+        left: 65px;
+        top: 79px;
+        font-size: 1.8rem;
+        color: #062549;
+      }
+
+      .hero-leg {
+        top: 90px;
+        font-size: 2.5rem;
+        color: #062549;
+        transform-origin: 50% 0;
+        transition: transform 0.24s ease;
+      }
+
+      .hero-leg-left {
+        left: 56px;
+        transform: rotate(16deg);
+      }
+
+      .hero-leg-right {
+        right: 53px;
+        transform: rotate(-16deg);
+      }
+
+      .hero-shoe {
+        top: 120px;
+        font-size: 1.8rem;
+        transition: transform 0.24s ease;
+      }
+
+      .hero-shoe-left {
+        left: 42px;
+      }
+
+      .hero-shoe-right {
+        right: 38px;
+      }
+
+      .hero-mini.is-walking .hero-leg-left {
+        animation: walkLeftLeg 0.24s ease-in-out infinite alternate;
+      }
+
+      .hero-mini.is-walking .hero-leg-right {
+        animation: walkRightLeg 0.24s ease-in-out infinite alternate;
+      }
+
+      .hero-mini.is-walking .hero-shoe-left {
+        animation: walkLeftFoot 0.24s ease-in-out infinite alternate;
+      }
+
+      .hero-mini.is-walking .hero-shoe-right {
+        animation: walkRightFoot 0.24s ease-in-out infinite alternate;
+      }
+
+      @keyframes heroFloat {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-2deg);
+        }
+        50% {
+          transform: translateY(-8px) rotate(2deg);
+        }
+      }
+
+      @keyframes demonWalk {
+        from {
+          transform: translateY(0) rotate(-2deg);
+        }
+        to {
+          transform: translateY(-3px) rotate(2deg);
+        }
+      }
+
+      @keyframes walkLeftLeg {
+        from { transform: rotate(16deg); }
+        to { transform: rotate(38deg); }
+      }
+
+      @keyframes walkRightLeg {
+        from { transform: rotate(-16deg); }
+        to { transform: rotate(-38deg); }
+      }
+
+      @keyframes walkLeftFoot {
+        from { transform: rotate(0); }
+        to { transform: rotate(-24deg); }
+      }
+
+      @keyframes walkRightFoot {
+        from { transform: rotate(0); }
+        to { transform: rotate(24deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      id="scene-canvas"
+      role="img"
+      aria-label="A green canvas filled by the unicode character grid block"
+    >
+      ▦
+    </canvas>
+    <div class="ghost" role="img" aria-label="Ghost following the hero">👻</div>
+    <div class="hero-mini" aria-label="Emoji hero character" aria-hidden="true">
+      <div class="hero-mini-art">
+        <span class="hero-limb hero-limb-left">❙</span>
+        <span class="hero-limb hero-limb-right">❙</span>
+        <span class="hero-arm hero-hand-left">🤛</span>
+        <span class="hero-arm hero-hand-right">🤛</span>
+        <span class="hero-head">🙂</span>
+        <span class="hero-body">▮</span>
+        <span class="hero-hips">▀</span>
+        <span class="hero-leg hero-leg-left">❚</span>
+        <span class="hero-leg hero-leg-right">❚</span>
+        <span class="hero-shoe hero-shoe-left">👟</span>
+        <span class="hero-shoe hero-shoe-right">👟</span>
+      </div>
+    </div>
+    <div class="hero-mini demon-mini" role="img" aria-label="Wandering devil character">
+      <div class="hero-mini-art">
+        <span class="hero-limb hero-limb-left">❙</span>
+        <span class="hero-limb hero-limb-right">❙</span>
+        <span class="hero-arm hero-hand-left">🤛</span>
+        <span class="hero-arm hero-hand-right">🤛</span>
+        <span class="hero-head">😈</span>
+        <span class="hero-body">▮</span>
+        <span class="hero-hips">▀</span>
+        <span class="hero-leg hero-leg-left">❚</span>
+        <span class="hero-leg hero-leg-right">❚</span>
+        <span class="hero-shoe hero-shoe-left">👟</span>
+        <span class="hero-shoe hero-shoe-right">👟</span>
+      </div>
+    </div>
+    <script>
+      const canvas = document.querySelector("#scene-canvas");
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      const glyph = "▦";
+      const flowers = new Array(
+        ['🌻', 20],
+        ['🌼', 20],
+        ['🌷', 20],
+        ['🍄', 20]);
+      const hero = document.querySelector(".hero-mini");
+      const demon = document.querySelector(".demon-mini");
+      const ghost = document.querySelector(".ghost");
+      const ghostPosition = { x: 0, y: 0 };
+      const movementDirection = { x: 1, y: 0 };
+      const movementKeys = new Set();
+      let demonDirection = { x: 0, y: 0 };
+      let demonWalkAnimationTimer;
+      let hasPlacedDemon = false;
+      let demonHasExited = false;
+      const movementStep = 20;
+      let scenePixels;
+      let scenePixelRatio = 1;
+      let sceneOffsetX = 0;
+      let sceneOffsetY = 0;
+      let sceneTileWidth = 0;
+      let sceneTileHeight = 0;
+      let flowerPositions = [];
+      let flowerTileWidth = 0;
+      let flowerTileHeight = 0;
+
+      function isLightGreenAt(x, y) {
+        const sampleOffsets = [-10, 0, 10];
+
+        for (const offsetY of sampleOffsets) {
+          for (const offsetX of sampleOffsets) {
+            const pixelX = Math.floor((x + offsetX) * scenePixelRatio);
+            const pixelY = Math.floor((y + offsetY) * scenePixelRatio);
+
+            if (pixelX < 0 || pixelY < 0 || pixelX >= canvas.width || pixelY >= canvas.height) {
+              return false;
+            }
+
+            const pixelIndex = (pixelY * canvas.width + pixelX) * 4;
+            if (
+              scenePixels[pixelIndex] < 40 ||
+              scenePixels[pixelIndex + 1] < 150 ||
+              scenePixels[pixelIndex + 2] < 60
+            ) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      }
+
+      function canHeroOccupy(left, top, sampleSpacing = 1) {
+        const maxLeft = window.innerWidth - hero.offsetWidth;
+        const maxTop = window.innerHeight - hero.offsetHeight;
+
+        if (left < 0 || top < 0 || left > maxLeft || top > maxTop || !scenePixels) {
+          return false;
+        }
+
+        const hitboxWidth = hero.offsetWidth * 0.76;
+        const hitboxHeight = hero.offsetHeight * 0.18;
+        const hitboxLeft = left + (hero.offsetWidth - hitboxWidth) / 2;
+        const hitboxTop = top + hero.offsetHeight - hitboxHeight;
+        const collisionLeft = Math.floor(hitboxLeft * scenePixelRatio);
+        const collisionTop = Math.floor(hitboxTop * scenePixelRatio);
+        const collisionWidth = Math.ceil(hitboxWidth * scenePixelRatio);
+        const collisionHeight = Math.ceil(hitboxHeight * scenePixelRatio);
+        const sampleStep = Math.max(1, Math.floor(sampleSpacing * scenePixelRatio));
+
+        function isDarkGreenAt(sampleX, sampleY) {
+          const pixelX = Math.min(canvas.width - 1, collisionLeft + sampleX);
+          const pixelY = Math.min(canvas.height - 1, collisionTop + sampleY);
+          const pixelIndex = (pixelY * canvas.width + pixelX) * 4;
+
+          return (
+            scenePixels[pixelIndex] < 50 &&
+            scenePixels[pixelIndex + 1] < 165 &&
+            scenePixels[pixelIndex + 2] < 85
+          );
+        }
+
+        for (let sampleY = 0; sampleY < collisionHeight; sampleY += sampleStep) {
+          for (let sampleX = 0; sampleX < collisionWidth; sampleX += sampleStep) {
+            if (!isDarkGreenAt(sampleX, sampleY)) return false;
+          }
+
+          if ((collisionWidth - 1) % sampleStep !== 0 && !isDarkGreenAt(collisionWidth - 1, sampleY)) {
+            return false;
+          }
+        }
+
+        if ((collisionHeight - 1) % sampleStep !== 0) {
+          for (let sampleX = 0; sampleX < collisionWidth; sampleX += sampleStep) {
+            if (!isDarkGreenAt(sampleX, collisionHeight - 1)) return false;
+          }
+
+          if ((collisionWidth - 1) % sampleStep !== 0 && !isDarkGreenAt(collisionWidth - 1, collisionHeight - 1)) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      function findNearestWalkablePosition(startLeft, startTop) {
+        const maxLeft = window.innerWidth - hero.offsetWidth;
+        const maxTop = window.innerHeight - hero.offsetHeight;
+        const step = 8;
+        const horizontalPositions = [];
+        const verticalPositions = [];
+        let nearestPosition = null;
+        let nearestDistance = Infinity;
+
+        for (let left = 0; left < maxLeft; left += step) horizontalPositions.push(left);
+        for (let top = 0; top < maxTop; top += step) verticalPositions.push(top);
+        horizontalPositions.push(maxLeft);
+        verticalPositions.push(maxTop);
+
+        for (const candidateTop of verticalPositions) {
+          for (const candidateLeft of horizontalPositions) {
+            const distance = (candidateLeft - startLeft) ** 2 + (candidateTop - startTop) ** 2;
+
+            if (distance >= nearestDistance || !canHeroOccupy(candidateLeft, candidateTop, 4)) {
+              continue;
+            }
+
+            if (canHeroOccupy(candidateLeft, candidateTop)) {
+              nearestPosition = { left: candidateLeft, top: candidateTop };
+              nearestDistance = distance;
+            }
+          }
+        }
+
+        return nearestPosition;
+      }
+
+      function findRandomDemonPosition() {
+        const maxLeft = window.innerWidth - demon.offsetWidth;
+        const maxTop = window.innerHeight - demon.offsetHeight;
+        const minimumDistance = Math.min(180, Math.hypot(maxLeft, maxTop) * 0.25);
+
+        for (let attempt = 0; attempt < 150; attempt += 1) {
+          const left = Math.floor(Math.random() * (maxLeft + 1));
+          const top = Math.floor(Math.random() * (maxTop + 1));
+          const distanceFromHero = Math.hypot(left - hero.offsetLeft, top - hero.offsetTop);
+
+          if (
+            distanceFromHero >= minimumDistance &&
+            canHeroOccupy(left, top, 4) &&
+            canHeroOccupy(left, top)
+          ) {
+            return { left, top };
+          }
+        }
+
+        return findNearestWalkablePosition(
+          (hero.offsetLeft + maxLeft) / 2,
+          (hero.offsetTop + maxTop) / 2,
+        );
+      }
+
+      function clampDemonPosition() {
+        if (demonHasExited) return;
+
+        const maxLeft = Math.max(0, window.innerWidth - demon.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - demon.offsetHeight);
+        const currentLeft = Math.min(maxLeft, Math.max(0, demon.offsetLeft));
+        const currentTop = Math.min(maxTop, Math.max(0, demon.offsetTop));
+
+        demon.style.left = `${currentLeft}px`;
+        demon.style.top = `${currentTop}px`;
+
+        if (canHeroOccupy(currentLeft, currentTop)) return;
+
+        const nearestPosition = findNearestWalkablePosition(currentLeft, currentTop);
+        if (!nearestPosition) return;
+
+        demon.style.left = `${nearestPosition.left}px`;
+        demon.style.top = `${nearestPosition.top}px`;
+      }
+
+      function getDemonMoves() {
+        const maxLeft = window.innerWidth - demon.offsetWidth;
+        const maxTop = window.innerHeight - demon.offsetHeight;
+        const exitMargin = Math.max(demon.offsetWidth, demon.offsetHeight) * 1.5;
+        const directions = [
+          { x: 0, y: -1 },
+          { x: 0, y: 1 },
+          { x: -1, y: 0 },
+          { x: 1, y: 0 },
+        ];
+
+        return directions
+          .map(({ x, y }) => {
+            const left = demon.offsetLeft + x * movementStep;
+            const top = demon.offsetTop + y * movementStep;
+            let exitSide = null;
+
+            if (x < 0 && (left < 0 || demon.offsetLeft <= exitMargin)) exitSide = "left";
+            else if (x > 0 && (left > maxLeft || demon.offsetLeft >= maxLeft - exitMargin)) exitSide = "right";
+            else if (y < 0 && (top < 0 || demon.offsetTop <= exitMargin)) exitSide = "top";
+            else if (y > 0 && (top > maxTop || demon.offsetTop >= maxTop - exitMargin)) exitSide = "bottom";
+
+            return { x, y, left, top, exitSide };
+          })
+          .filter(({ left, top, exitSide }) =>
+            exitSide ||
+            ((left !== demon.offsetLeft || top !== demon.offsetTop) &&
+              canHeroOccupy(left, top, 4) &&
+              canHeroOccupy(left, top)),
+          );
+      }
+
+      function animateDemonStep() {
+        demon.classList.add("is-walking");
+        window.clearTimeout(demonWalkAnimationTimer);
+        demonWalkAnimationTimer = window.setTimeout(() => {
+          demon.classList.remove("is-walking");
+        }, 240);
+      }
+
+      function walkDemon() {
+        if (demonHasExited) return;
+
+        const moves = getDemonMoves();
+        const exitMoves = moves.filter(({ exitSide }) => exitSide);
+        const forwardMoves = moves.filter(
+          ({ x, y, exitSide }) => !exitSide && (x !== -demonDirection.x || y !== -demonDirection.y),
+        );
+        const availableMoves = exitMoves.length
+          ? [...forwardMoves, ...exitMoves]
+          : forwardMoves.length
+            ? forwardMoves
+            : moves;
+
+        if (availableMoves.length) {
+          const move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+          demonDirection = { x: move.x, y: move.y };
+
+          if (move.exitSide) {
+            demonHasExited = true;
+            window.clearTimeout(demonWalkAnimationTimer);
+            demon.classList.remove("is-walking");
+            demon.classList.add("is-exiting");
+            demon.style.left = `${move.exitSide === "left" ? -demon.offsetWidth : move.exitSide === "right" ? window.innerWidth : demon.offsetLeft}px`;
+            demon.style.top = `${move.exitSide === "top" ? -demon.offsetHeight : move.exitSide === "bottom" ? window.innerHeight : demon.offsetTop}px`;
+            return;
+          }
+
+          animateDemonStep();
+          demon.style.left = `${move.left}px`;
+          demon.style.top = `${move.top}px`;
+        }
+
+        window.setTimeout(walkDemon, 250 + Math.random() * 500);
+      }
+
+      function moveDemonWithScene(offsetX, offsetY) {
+        if (demonHasExited) return;
+
+        const maxLeft = Math.max(0, window.innerWidth - demon.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - demon.offsetHeight);
+        const nextLeft = Math.min(maxLeft, Math.max(0, demon.offsetLeft - offsetX));
+        const nextTop = Math.min(maxTop, Math.max(0, demon.offsetTop - offsetY));
+
+        if (canHeroOccupy(nextLeft, nextTop)) {
+          animateDemonStep();
+          demon.style.left = `${nextLeft}px`;
+          demon.style.top = `${nextTop}px`;
+          return;
+        }
+
+        const nearestPosition = findNearestWalkablePosition(nextLeft, nextTop);
+        if (!nearestPosition) return;
+
+        animateDemonStep();
+        demon.style.left = `${nearestPosition.left}px`;
+        demon.style.top = `${nearestPosition.top}px`;
+      }
+
+      function clampHeroPosition() {
+        const maxLeft = Math.max(0, window.innerWidth - hero.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - hero.offsetHeight);
+        const currentLeft = Math.min(maxLeft, Math.max(0, hero.offsetLeft));
+        const currentTop = Math.min(maxTop, Math.max(0, hero.offsetTop));
+
+        hero.style.left = `${currentLeft}px`;
+        hero.style.top = `${currentTop}px`;
+
+        if (canHeroOccupy(currentLeft, currentTop)) return;
+
+        const nearestPosition = findNearestWalkablePosition(currentLeft, currentTop);
+        if (!nearestPosition) return;
+
+        hero.style.left = `${nearestPosition.left}px`;
+        hero.style.top = `${nearestPosition.top}px`;
+      }
+
+      function animateSceneCharacter(character, animateFace = true) {
+        const face = character.querySelector(".hero-head");
+        const leftHand = character.querySelector(".hero-hand-left");
+        const rightHand = character.querySelector(".hero-hand-right");
+        const leftArm = character.querySelector(".hero-limb-left");
+        const rightArm = character.querySelector(".hero-limb-right");
+        const poses = [
+          { face: "🙂", left: "🤛", right: "🤛", leftHandAngle: -22, rightHandAngle: -22, leftArmAngle: 42, rightArmAngle: -42 },
+          { face: "😎", left: "✋", right: "👍", leftHandAngle: -38, rightHandAngle: 12, leftArmAngle: 52, rightArmAngle: -26 },
+          { face: "😮", left: "🤚", right: "✌️", leftHandAngle: -5, rightHandAngle: 24, leftArmAngle: 28, rightArmAngle: -48 },
+          { face: "😜", left: "👋", right: "🤟", leftHandAngle: -48, rightHandAngle: 36, leftArmAngle: 58, rightArmAngle: -56 },
+          { face: "😍", left: "🤛", right: "✋", leftHandAngle: -16, rightHandAngle: 18, leftArmAngle: 36, rightArmAngle: -30 },
+        ];
+        let poseIndex = 0;
+
+        function showNextPose() {
+          const pose = poses[poseIndex];
+          if (animateFace) face.textContent = pose.face;
+          leftHand.textContent = pose.left;
+          rightHand.textContent = pose.right;
+          leftHand.style.transform = `rotate(${pose.leftHandAngle}deg)`;
+          rightHand.style.transform = `scaleX(-1) rotate(${pose.rightHandAngle}deg)`;
+          leftArm.style.transform = `rotate(${pose.leftArmAngle}deg)`;
+          rightArm.style.transform = `rotate(${pose.rightArmAngle}deg)`;
+          poseIndex = (poseIndex + 1) % poses.length;
+        }
+
+        showNextPose();
+        window.setInterval(showNextPose, 1800);
+      }
+
+      function drawScene(repositionHero = true) {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const pixelRatio = Math.max(1, window.devicePixelRatio || 1);
+        const background = "#36c95a";
+
+        canvas.width = Math.round(width * pixelRatio);
+        canvas.height = Math.round(height * pixelRatio);
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        context.fillStyle = background;
+        context.fillRect(0, 0, width, height);
+
+        context.font = "1000px monospace";
+        context.fillStyle = "#075c35";
+        const metrics = context.measureText(glyph);
+        const left = metrics.actualBoundingBoxLeft;
+        const right = metrics.actualBoundingBoxRight;
+        const ascent = metrics.actualBoundingBoxAscent;
+        const descent = metrics.actualBoundingBoxDescent;
+        const glyphWidth = left + right;
+        const glyphHeight = ascent + descent;
+        const scaleX = (width / glyphWidth) * 2;
+        const scaleY = (height / glyphHeight) * 2;
+        sceneTileWidth = glyphWidth * scaleX;
+        sceneTileHeight = glyphHeight * scaleY;
+        sceneOffsetX = ((sceneOffsetX % sceneTileWidth) + sceneTileWidth) % sceneTileWidth;
+        sceneOffsetY = ((sceneOffsetY % sceneTileHeight) + sceneTileHeight) % sceneTileHeight;
+
+        for (let row = -1; row <= 1; row += 1) {
+          for (let column = -1; column <= 1; column += 1) {
+            const centerX = width / 2 - sceneOffsetX + column * sceneTileWidth;
+            const centerY = height / 2 - sceneOffsetY + row * sceneTileHeight;
+
+            context.save();
+            context.translate(
+              centerX - (glyphWidth * scaleX) / 2 + left * scaleX,
+              centerY - (glyphHeight * scaleY) / 2 + ascent * scaleY,
+            );
+            context.scale(scaleX, scaleY);
+            context.fillText(glyph, -left, 0);
+            context.restore();
+          }
+        }
+
+        scenePixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        scenePixelRatio = canvas.width / window.innerWidth;
+        if (sceneTileWidth !== flowerTileWidth || sceneTileHeight !== flowerTileHeight) {
+          flowerTileWidth = sceneTileWidth;
+          flowerTileHeight = sceneTileHeight;
+          flowerPositions = Array.from(
+            { length: Math.ceil((flowerTileWidth * flowerTileHeight) / 24000) },
+            () => ({
+              type: flowers[Math.floor(Math.random() * flowers.length)],
+              x: Math.random() * flowerTileWidth,
+              y: Math.random() * flowerTileHeight,
+            }),
+          );
+        }
+
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        for (let row = -1; row <= 1; row += 1) {
+          for (let column = -1; column <= 1; column += 1) {
+            const centerX = width / 2 - sceneOffsetX + column * sceneTileWidth;
+            const centerY = height / 2 - sceneOffsetY + row * sceneTileHeight;
+            const tileLeft = centerX - sceneTileWidth / 2;
+            const tileTop = centerY - sceneTileHeight / 2;
+
+            for (const flower of flowerPositions) {
+              const x = tileLeft + flower.x;
+              const y = tileTop + flower.y;
+              if (x < 10 || y < 10 || x > width - 10 || y > height - 10 || !isLightGreenAt(x, y)) {
+                continue;
+              }
+
+              context.font = `${flower.type[1]}px "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
+              context.fillText(flower.type[0], x, y);
+            }
+          }
+        }
+
+        if (repositionHero) {
+          clampHeroPosition();
+          if (hasPlacedDemon) clampDemonPosition();
+        }
+      }
+
+      function updateGhostPosition() {
+        const heroCenterX = hero.offsetLeft + hero.offsetWidth / 2;
+        const heroCenterY = hero.offsetTop + hero.offsetHeight / 2;
+        const followGap = 70;
+        const maxLeft = Math.max(0, window.innerWidth - ghost.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - ghost.offsetHeight);
+        const targetX = Math.max(
+          0,
+          Math.min(maxLeft, heroCenterX - movementDirection.x * followGap - ghost.offsetWidth / 2),
+        );
+        const targetY = Math.max(
+          0,
+          Math.min(maxTop, heroCenterY - movementDirection.y * followGap - ghost.offsetHeight / 2),
+        );
+        ghostPosition.x = Math.max(0, Math.min(maxLeft, ghostPosition.x + (targetX - ghostPosition.x) * 0.0125));
+        ghostPosition.y = Math.max(0, Math.min(maxTop, ghostPosition.y + (targetY - ghostPosition.y) * 0.0125));
+        ghost.style.left = `${ghostPosition.x}px`;
+        ghost.style.top = `${ghostPosition.y}px`;
+        window.requestAnimationFrame(updateGhostPosition);
+      }
+
+      window.addEventListener("keydown", (event) => {
+        const movement = {
+          ArrowUp: [0, -movementStep],
+          ArrowDown: [0, movementStep],
+          ArrowLeft: [-movementStep, 0],
+          ArrowRight: [movementStep, 0],
+        }[event.key];
+
+        if (!movement) return;
+
+        event.preventDefault();
+        const maxLeft = Math.max(0, window.innerWidth - hero.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - hero.offsetHeight);
+        const nextLeft = Math.min(maxLeft, Math.max(0, hero.offsetLeft + movement[0]));
+        const nextTop = Math.min(maxTop, Math.max(0, hero.offsetTop + movement[1]));
+        const canMoveHero = canHeroOccupy(nextLeft, nextTop);
+        const scrollMargin = Math.max(hero.offsetWidth * 1.5, movementStep);
+
+        const movingPastEdge =
+          (movement[0] < 0 && hero.offsetLeft === 0) ||
+          (movement[0] > 0 && hero.offsetLeft === maxLeft) ||
+          (movement[1] < 0 && hero.offsetTop === 0) ||
+          (movement[1] > 0 && hero.offsetTop === maxTop);
+        const blockedNearEdge =
+          !canMoveHero &&
+          ((movement[0] < 0 && hero.offsetLeft <= scrollMargin) ||
+            (movement[0] > 0 && hero.offsetLeft >= maxLeft - scrollMargin) ||
+            (movement[1] < 0 && hero.offsetTop <= scrollMargin) ||
+            (movement[1] > 0 && hero.offsetTop >= maxTop - scrollMargin));
+
+        if (movingPastEdge || blockedNearEdge) {
+          const previousOffsetX = sceneOffsetX;
+          const previousOffsetY = sceneOffsetY;
+          sceneOffsetX += movement[0];
+          sceneOffsetY += movement[1];
+          drawScene(false);
+
+          if (!canHeroOccupy(hero.offsetLeft, hero.offsetTop)) {
+            sceneOffsetX = previousOffsetX;
+            sceneOffsetY = previousOffsetY;
+            drawScene(false);
+            return;
+          }
+
+          movementKeys.add(event.key);
+          hero.classList.add("is-walking");
+          movementDirection.x = movement[0] / movementStep;
+          movementDirection.y = movement[1] / movementStep;
+          moveDemonWithScene(movement[0], movement[1]);
+          window.dispatchEvent(new Event("scene-hero-moving"));
+          return;
+        }
+
+        if (!canMoveHero) return;
+
+        movementKeys.add(event.key);
+        hero.classList.add("is-walking");
+        movementDirection.x = movement[0] / movementStep;
+        movementDirection.y = movement[1] / movementStep;
+        hero.style.left = `${nextLeft}px`;
+        hero.style.top = `${nextTop}px`;
+        window.dispatchEvent(new Event("scene-hero-moving"));
+      });
+
+      window.addEventListener("keyup", (event) => {
+        movementKeys.delete(event.key);
+        if (movementKeys.size === 0) hero.classList.remove("is-walking");
+      });
+
+      window.addEventListener("blur", () => {
+        movementKeys.clear();
+        hero.classList.remove("is-walking");
+      });
+
+      window.addEventListener("resize", drawScene, { passive: true });
+      drawScene();
+      animateSceneCharacter(hero);
+      animateSceneCharacter(demon, false);
+      ghostPosition.x = Math.min(
+        Math.max(0, window.innerWidth - ghost.offsetWidth),
+        hero.offsetLeft - ghost.offsetWidth - 24,
+      );
+      ghostPosition.y = Math.min(
+        Math.max(0, window.innerHeight - ghost.offsetHeight),
+        hero.offsetTop + (hero.offsetHeight - ghost.offsetHeight) / 2,
+      );
+      ghost.style.left = `${ghostPosition.x}px`;
+      ghost.style.top = `${ghostPosition.y}px`;
+      window.requestAnimationFrame(updateGhostPosition);
+      const demonPosition = findRandomDemonPosition();
+      if (demonPosition) {
+        demon.style.left = `${demonPosition.left}px`;
+        demon.style.top = `${demonPosition.top}px`;
+        hasPlacedDemon = true;
+        window.setTimeout(walkDemon, 350);
+      }
+    </script>
+    <script type="module">
+      import * as Tone from "https://cdn.jsdelivr.net/npm/tone@15.1.22/+esm";
+      import { Midi } from "https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.28/+esm";
+
+      const fallbackMidiFiles = ["ACKER-GS.MID", "AME_KISS.MID", "ANTICI.MID", "BOMB.MID"];
+      let isStarting = false;
+      let hasStarted = false;
+
+      async function getSortedMidiFiles() {
+        try {
+          const response = await fetch("./midi/");
+          if (!response.ok) throw new Error("MIDI directory could not be listed");
+
+          const directory = new DOMParser().parseFromString(await response.text(), "text/html");
+          const fileNames = Array.from(directory.querySelectorAll("a[href]"), (link) => {
+            const fileUrl = new URL(link.getAttribute("href"), response.url);
+            return decodeURIComponent(fileUrl.pathname.split("/").pop());
+          }).filter((fileName) => /\.midi?$/i.test(fileName));
+
+          if (fileNames.length) {
+            return fileNames.sort((first, second) => first.localeCompare(second, undefined, { sensitivity: "base" }));
+          }
+        } catch (error) {
+          console.warn("Could not list bundled MIDI files; using the fallback list.", error);
+        }
+
+        return [...fallbackMidiFiles].sort((first, second) => first.localeCompare(second, undefined, { sensitivity: "base" }));
+      }
+
+      async function playFirstMidi() {
+        const audioReady = Tone.start();
+        await audioReady;
+        const fileNames = await getSortedMidiFiles();
+
+        for (const fileName of fileNames) {
+          try {
+            const response = await fetch(`./midi/${encodeURIComponent(fileName)}`);
+            if (!response.ok) continue;
+
+            const midi = new Midi(await response.arrayBuffer());
+            const notes = midi.tracks.flatMap((track) => track.notes);
+            if (!notes.length) continue;
+
+            const synth = new Tone.PolySynth(Tone.Synth, {
+              oscillator: { type: "triangle" },
+              envelope: { attack: 0.01, decay: 0.12, sustain: 0.35, release: 0.35 },
+            }).toDestination();
+            const startAt = Tone.now() + 0.05;
+
+            for (const note of notes) {
+              synth.triggerAttackRelease(note.name, Math.max(0.05, note.duration), startAt + note.time, note.velocity);
+            }
+
+            hasStarted = true;
+            return;
+          } catch (error) {
+            console.warn(`Skipping MIDI file ${fileName}:`, error);
+          }
+        }
+
+        throw new Error("No playable MIDI files were found.");
+      }
+
+      window.addEventListener("scene-hero-moving", () => {
+        if (isStarting || hasStarted) return;
+        isStarting = true;
+        playFirstMidi().catch((error) => {
+          isStarting = false;
+          console.error("Scene MIDI playback failed:", error);
+        });
+      });
+    </script>
+  </body>
+</html>

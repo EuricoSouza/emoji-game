@@ -79,22 +79,22 @@ body {
   transition: transform 0.45s ease;
 }
 
-.hero-arm-left {
-  left: 14px;
+.hero-hand-left {
+  top: 58px;
+  left: -1px;
   transform: rotate(-22deg);
 }
 
-.hero-arm-right {
-  right: 14px;
+.hero-hand-right {
+  top: 58px;
+  right: -1px;
   transform: scaleX(-1) rotate(-22deg);
 }
 
 .hero-limb {
   top: 47px;
-  width: 10px;
-  height: 38px;
-  border-radius: 999px;
-  background: #f7d54a;
+  font-size: 2.5rem;
+  color: #f7d54a;
   transform-origin: top center;
   z-index: 2;
   transition: transform 0.45s ease;
@@ -111,34 +111,34 @@ body {
 }
 
 .hero-body {
-  left: 48px;
-  top: 58px;
+  left: 55px;
+  top: 40px;
   font-size: 2.5rem;
-  color: #1d74d6;
+  color: #5f666e;
   z-index: 1;
   transform: rotate(2deg);
 }
 
 .hero-hips {
-  left: 48px;
+  left: 65px;
   top: 79px;
   font-size: 1.8rem;
-  color: #d7b25f;
+  color: #062549;
 }
 
 .hero-leg {
   top: 90px;
   font-size: 2.5rem;
-  color: #4c78cc;
+  color: #062549;
 }
 
 .hero-leg-left {
-  left: 46px;
+  left: 56px;
   transform: rotate(16deg);
 }
 
 .hero-leg-right {
-  right: 43px;
+  right: 53px;
   transform: rotate(-16deg);
 }
 
@@ -218,7 +218,8 @@ body {
 
 h1 {
   margin: 0;
-  font-size: clamp(3rem, 7vw, 7rem);
+  font-size: clamp(2rem, 7vw, 7rem);
+  white-space: nowrap;
   line-height: 0.9;
   color: var(--sun-yellow);
   font-weight: 900;
@@ -243,7 +244,7 @@ h1 {
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
   padding-top: 0.25rem;
 }
@@ -547,6 +548,26 @@ h1 {
   content: "🖥️";
 }
 
+.sub-items .scene-one::before {
+  content: "🌍";
+}
+
+.contact-items .whatsapp-item::before {
+  content: "📱";
+}
+
+.contact-items .instagram-item::before {
+  content: "📷";
+}
+
+.contact-items .email-item::before {
+  content: "✉️";
+}
+
+.contact-items .linkedin-item::before {
+  content: "💼";
+}
+
 .sub-items a {
   color: var(--ink);
   text-decoration: none;
@@ -570,10 +591,6 @@ h1 {
 
   .menu a {
     font-size: 0.82rem;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
   }
 
   .hero {

@@ -26,12 +26,12 @@ function resizeCanvas() {
 
   const starCount = Math.max(80, Math.floor(window.innerWidth / 12));
   const starEmoji = ['⭐', '🌟', '✳', '·', '✦', '✫', '*', '˚', '+', 
-    '🟉', '🟄', '✴', '🟎' , '✹', '⚝','❂', '✨', '✡', '💫','✸'];
+    '🟉', '🟄', '✴', '🟎' , '✹', '⚝','❂', '✨','💫','✸'];
   for (let i = 0; i < starCount; i += 1) {
     stars.push({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight * 0.6,
-      size: 10 + Math.random() * 18,
+      size: 6 + Math.random() * 12,
       alpha: Math.random() * 0.7 + 0.3,
       speed: Math.random() * 0.3 + 0.08,
       emoji: starEmoji[Math.floor(Math.random() * starEmoji.length)],
@@ -39,13 +39,13 @@ function resizeCanvas() {
     });
   }
 
-  const cloudEmoji = ['☁️', '⛅', '🌤️', '☁', '🌥', '🌧', '🌫','🌪'];
-  const cloudCount = 6;
+  const cloudEmoji = ['☁️', '☁', '🌧'];
+  const cloudCount = 10;
   for (let i = 0; i < cloudCount; i += 1) {
     clouds.push({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight * 0.45,
-      size: 22 + Math.random() * 36,
+      size: 36 + Math.random() * 44,
       speed: 0.12 + Math.random() * 0.18,
       alpha: 0.18 + Math.random() * 0.22,
       emoji: cloudEmoji[Math.floor(Math.random() * cloudEmoji.length)],
@@ -110,8 +110,8 @@ function animateHeroCharacter() {
   if (!character) return;
 
   const face = character.querySelector('.hero-head');
-  const leftHand = character.querySelector('.hero-arm-left');
-  const rightHand = character.querySelector('.hero-arm-right');
+  const leftHand = character.querySelector('.hero-hand-left');
+  const rightHand = character.querySelector('.hero-hand-right');
   const leftArm = character.querySelector('.hero-limb-left');
   const rightArm = character.querySelector('.hero-limb-right');
   const poses = [

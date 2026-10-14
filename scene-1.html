@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#36c95a" />
     <title>Scene 1 | Em😊jigame</title>
+    <link rel="stylesheet" href="hero-character.css" />
     <style>
       html,
       body {
@@ -22,6 +23,23 @@
         height: 100%;
       }
 
+      .scene-car {
+        position: absolute;
+        top: 0.75rem;
+        left: 50%;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        width: 140px;
+        height: 128px;
+        font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+        font-size: 120px;
+        line-height: 1;
+        pointer-events: none;
+        transform: translateX(-50%);
+        filter: drop-shadow(0 3px 6px rgba(17, 44, 81, 0.22));
+      }
+
       .ghost {
         position: absolute;
         top: 0;
@@ -34,6 +52,9 @@
         font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
         font-size: 2rem;
         line-height: 1;
+        transform: scaleX(1);
+        transform-origin: center;
+        transition: transform 0.15s ease;
         pointer-events: none;
         filter: drop-shadow(0 3px 6px rgba(17, 44, 81, 0.22));
         will-change: left, top;
@@ -65,140 +86,26 @@
         transition: left 0.36s ease-in, top 0.36s ease-in;
       }
 
+      .demon-mini.is-returning {
+        transition: left 0.6s ease-out, top 0.6s ease-out;
+      }
+
+      .alien-mini {
+        top: auto;
+        right: 0.75rem;
+        bottom: 0.8rem;
+        left: auto;
+        z-index: 2;
+      }
+
+      .roaming-mini {
+        z-index: 2;
+        transition: left 0.24s linear, top 0.24s linear;
+      }
+
       .hero-mini-art {
-        position: relative;
-        width: 150px;
-        height: 140px;
         transform: scale(0.5);
         transform-origin: top left;
-      }
-
-      .hero-mini span {
-        position: absolute;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-      }
-
-      .hero-head {
-        left: 46px;
-        top: 6px;
-        font-size: 3rem;
-        z-index: 2;
-        transition: transform 0.3s ease;
-      }
-
-      .hero-arm {
-        top: 38px;
-        font-size: 2.1rem;
-        z-index: 3;
-        transition: transform 0.45s ease;
-      }
-
-      .hero-hand-left {
-        top: 58px;
-        left: -1px;
-        transform: rotate(-22deg);
-      }
-
-      .hero-hand-right {
-        top: 58px;
-        right: -1px;
-        transform: scaleX(-1) rotate(-22deg);
-      }
-
-      .hero-limb {
-        top: 47px;
-        font-size: 2.5rem;
-        color: #f7d54a;
-        transform-origin: top center;
-        z-index: 2;
-        transition: transform 0.45s ease;
-      }
-
-      .hero-limb-left {
-        left: 46px;
-        transform: rotate(42deg);
-      }
-
-      .hero-limb-right {
-        right: 46px;
-        transform: rotate(-42deg);
-      }
-
-      .hero-body {
-        left: 55px;
-        top: 40px;
-        font-size: 2.5rem;
-        color: #5f666e;
-        z-index: 1;
-        transform: rotate(2deg);
-      }
-
-      .hero-hips {
-        left: 65px;
-        top: 79px;
-        font-size: 1.8rem;
-        color: #062549;
-      }
-
-      .hero-leg {
-        top: 90px;
-        font-size: 2.5rem;
-        color: #062549;
-        transform-origin: 50% 0;
-        transition: transform 0.24s ease;
-      }
-
-      .hero-leg-left {
-        left: 56px;
-        transform: rotate(16deg);
-      }
-
-      .hero-leg-right {
-        right: 53px;
-        transform: rotate(-16deg);
-      }
-
-      .hero-shoe {
-        top: 120px;
-        font-size: 1.8rem;
-        transition: transform 0.24s ease;
-      }
-
-      .hero-shoe-left {
-        left: 42px;
-      }
-
-      .hero-shoe-right {
-        right: 38px;
-      }
-
-      .hero-mini.is-walking .hero-leg-left {
-        animation: walkLeftLeg 0.24s ease-in-out infinite alternate;
-      }
-
-      .hero-mini.is-walking .hero-leg-right {
-        animation: walkRightLeg 0.24s ease-in-out infinite alternate;
-      }
-
-      .hero-mini.is-walking .hero-shoe-left {
-        animation: walkLeftFoot 0.24s ease-in-out infinite alternate;
-      }
-
-      .hero-mini.is-walking .hero-shoe-right {
-        animation: walkRightFoot 0.24s ease-in-out infinite alternate;
-      }
-
-      @keyframes heroFloat {
-        0%,
-        100% {
-          transform: translateY(0) rotate(-2deg);
-        }
-        50% {
-          transform: translateY(-8px) rotate(2deg);
-        }
       }
 
       @keyframes demonWalk {
@@ -210,25 +117,6 @@
         }
       }
 
-      @keyframes walkLeftLeg {
-        from { transform: rotate(16deg); }
-        to { transform: rotate(38deg); }
-      }
-
-      @keyframes walkRightLeg {
-        from { transform: rotate(-16deg); }
-        to { transform: rotate(-38deg); }
-      }
-
-      @keyframes walkLeftFoot {
-        from { transform: rotate(0); }
-        to { transform: rotate(-24deg); }
-      }
-
-      @keyframes walkRightFoot {
-        from { transform: rotate(0); }
-        to { transform: rotate(24deg); }
-      }
     </style>
   </head>
   <body>
@@ -240,65 +128,91 @@
       ▦
     </canvas>
     <div class="ghost" role="img" aria-label="Ghost following the hero">👻</div>
-    <div class="hero-mini" aria-label="Emoji hero character" aria-hidden="true">
-      <div class="hero-mini-art">
-        <span class="hero-limb hero-limb-left">❙</span>
-        <span class="hero-limb hero-limb-right">❙</span>
-        <span class="hero-arm hero-hand-left">🤛</span>
-        <span class="hero-arm hero-hand-right">🤛</span>
-        <span class="hero-head">🙂</span>
-        <span class="hero-body">▮</span>
-        <span class="hero-hips">▀</span>
-        <span class="hero-leg hero-leg-left">❚</span>
-        <span class="hero-leg hero-leg-right">❚</span>
-        <span class="hero-shoe hero-shoe-left">👟</span>
-        <span class="hero-shoe hero-shoe-right">👟</span>
-      </div>
-    </div>
-    <div class="hero-mini demon-mini" role="img" aria-label="Wandering devil character">
-      <div class="hero-mini-art">
-        <span class="hero-limb hero-limb-left">❙</span>
-        <span class="hero-limb hero-limb-right">❙</span>
-        <span class="hero-arm hero-hand-left">🤛</span>
-        <span class="hero-arm hero-hand-right">🤛</span>
-        <span class="hero-head">😈</span>
-        <span class="hero-body">▮</span>
-        <span class="hero-hips">▀</span>
-        <span class="hero-leg hero-leg-left">❚</span>
-        <span class="hero-leg hero-leg-right">❚</span>
-        <span class="hero-shoe hero-shoe-left">👟</span>
-        <span class="hero-shoe hero-shoe-right">👟</span>
-      </div>
-    </div>
+    <div class="scene-car" role="img" aria-label="Parked car">🚗</div>
+    <script src="hero-character.js"></script>
     <script>
       const canvas = document.querySelector("#scene-canvas");
       const context = canvas.getContext("2d", { willReadFrequently: true });
       const glyph = "▦";
-      const flowers = new Array(
+      const mazeEmojis = new Array(
         ['🌻', 20],
         ['🌼', 20],
         ['🌷', 20],
-        ['🍄', 20]);
-      const hero = document.querySelector(".hero-mini");
-      const demon = document.querySelector(".demon-mini");
+        ['🍄', 20],
+        ['🌿', 20],
+        ['🍎', 20],
+        ['🍕', 20],
+        ['🍔', 20],
+        ['🍰', 20],
+        ['🍩', 20],
+        ['🍉', 20],
+        ['🥕', 20]);
+      const foodEmojis = new Set(['🍎', '🍕', '🍔', '🍰', '🍩', '🍉', '🥕']);
+      const sceneCar = document.querySelector(".scene-car");
+      const hero = new HeroCharacter().mount(document.body);
+      const demon = new HeroCharacter({
+        face: "😈",
+        outfitColor: "#c44747",
+        lowerBodyColor: "#8b1e2d",
+        feet: "👢",
+        className: "hero-mini demon-mini",
+        label: "Wandering devil character",
+        ariaHidden: false,
+      }).mount(document.body);
+      const alien = new HeroCharacter({
+        face: "👽",
+        outfitColor: "#7ed957",
+        lowerBodyColor: "#4b1f6f",
+        feet: "👞",
+        className: "hero-mini alien-mini",
+        label: "Alien character",
+        ariaHidden: false,
+      }).mount(document.body);
+      const frog = new HeroCharacter({
+        face: "🐸",
+        outfitColor: "#32a852",
+        lowerBodyColor: "#0d6330",
+        className: "hero-mini roaming-mini frog-mini",
+        label: "Frog character",
+        ariaHidden: false,
+      }).mount(document.body);
+      const reptilian = new HeroCharacter({
+        face: "🐲",
+        outfitColor: "#238c91",
+        lowerBodyColor: "#14505a",
+        className: "hero-mini roaming-mini reptilian-mini",
+        label: "Reptilian character",
+        ariaHidden: false,
+      }).mount(document.body);
+      const monkey = new HeroCharacter({
+        face: "🐵",
+        outfitColor: "#b87538",
+        lowerBodyColor: "#653f2c",
+        className: "hero-mini roaming-mini monkey-mini",
+        label: "Monkey character",
+        ariaHidden: false,
+      }).mount(document.body);
+      const roamingCharacters = [frog, reptilian, monkey];
+      const worldActors = [sceneCar, demon, alien, ...roamingCharacters];
       const ghost = document.querySelector(".ghost");
       const ghostPosition = { x: 0, y: 0 };
       const movementDirection = { x: 1, y: 0 };
       const movementKeys = new Set();
       let demonDirection = { x: 0, y: 0 };
       let demonWalkAnimationTimer;
+      const characterWalkTimers = new WeakMap();
       let hasPlacedDemon = false;
       let demonHasExited = false;
-      const movementStep = 20;
+      const movementStep = 10;
       let scenePixels;
       let scenePixelRatio = 1;
       let sceneOffsetX = 0;
       let sceneOffsetY = 0;
       let sceneTileWidth = 0;
       let sceneTileHeight = 0;
-      let flowerPositions = [];
-      let flowerTileWidth = 0;
-      let flowerTileHeight = 0;
+      let mazeEmojiPositions = [];
+      let emojiTileWidth = 0;
+      let emojiTileHeight = 0;
 
       function isLightGreenAt(x, y) {
         const sampleOffsets = [-10, 0, 10];
@@ -324,6 +238,22 @@
         }
 
         return true;
+      }
+
+      function isDarkGreenAt(x, y) {
+        const pixelX = Math.floor(x * scenePixelRatio);
+        const pixelY = Math.floor(y * scenePixelRatio);
+
+        if (pixelX < 0 || pixelY < 0 || pixelX >= canvas.width || pixelY >= canvas.height) {
+          return false;
+        }
+
+        const pixelIndex = (pixelY * canvas.width + pixelX) * 4;
+        return (
+          scenePixels[pixelIndex] < 50 &&
+          scenePixels[pixelIndex + 1] < 165 &&
+          scenePixels[pixelIndex + 2] < 85
+        );
       }
 
       function canHeroOccupy(left, top, sampleSpacing = 1) {
@@ -411,18 +341,22 @@
         return nearestPosition;
       }
 
-      function findRandomDemonPosition() {
-        const maxLeft = window.innerWidth - demon.offsetWidth;
-        const maxTop = window.innerHeight - demon.offsetHeight;
+      function findRandomDemonPosition(character = demon, occupiedCharacters = []) {
+        const maxLeft = window.innerWidth - character.offsetWidth;
+        const maxTop = window.innerHeight - character.offsetHeight;
         const minimumDistance = Math.min(180, Math.hypot(maxLeft, maxTop) * 0.25);
 
         for (let attempt = 0; attempt < 150; attempt += 1) {
           const left = Math.floor(Math.random() * (maxLeft + 1));
           const top = Math.floor(Math.random() * (maxTop + 1));
           const distanceFromHero = Math.hypot(left - hero.offsetLeft, top - hero.offsetTop);
+          const isSpacedFromCharacters = occupiedCharacters.every(
+            (other) => Math.hypot(left - other.offsetLeft, top - other.offsetTop) >= 90,
+          );
 
           if (
             distanceFromHero >= minimumDistance &&
+            isSpacedFromCharacters &&
             canHeroOccupy(left, top, 4) &&
             canHeroOccupy(left, top)
           ) {
@@ -496,6 +430,101 @@
         }, 240);
       }
 
+      function animateCharacterStep(character) {
+        character.classList.add("is-walking");
+        window.clearTimeout(characterWalkTimers.get(character));
+        const timer = window.setTimeout(() => {
+          character.classList.remove("is-walking");
+        }, 240);
+        characterWalkTimers.set(character, timer);
+      }
+
+      function walkCharacter(character) {
+        const directions = [
+          { x: 0, y: -1 },
+          { x: 0, y: 1 },
+          { x: -1, y: 0 },
+          { x: 1, y: 0 },
+        ];
+        const firstDirection = Math.floor(Math.random() * directions.length);
+        const maxLeft = Math.max(0, window.innerWidth - character.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - character.offsetHeight);
+
+        for (let offset = 0; offset < directions.length; offset += 1) {
+          const direction = directions[(firstDirection + offset) % directions.length];
+          const left = Math.min(maxLeft, Math.max(0, character.offsetLeft + direction.x * movementStep));
+          const top = Math.min(maxTop, Math.max(0, character.offsetTop + direction.y * movementStep));
+
+          if (
+            (left === character.offsetLeft && top === character.offsetTop) ||
+            !canHeroOccupy(left, top, 4) ||
+            !canHeroOccupy(left, top)
+          ) {
+            continue;
+          }
+
+          setCharacterFacing(character, direction.x);
+          animateCharacterStep(character);
+          character.style.left = `${left}px`;
+          character.style.top = `${top}px`;
+          break;
+        }
+
+        window.setTimeout(() => walkCharacter(character), 350 + Math.random() * 500);
+      }
+
+      function setCharacterFacing(character, horizontalMovement) {
+        if (horizontalMovement !== 0) {
+          character.classList.toggle("is-facing-left", horizontalMovement < 0);
+        }
+      }
+
+      function moveWorldActorsWithScene(offsetX, offsetY) {
+        for (const actor of worldActors) {
+          actor.style.left = `${actor.offsetLeft - offsetX}px`;
+          actor.style.top = `${actor.offsetTop - offsetY}px`;
+        }
+      }
+
+      function returnDemon(entrySide) {
+        window.setTimeout(() => {
+          const position = findRandomDemonPosition();
+
+          if (!position) {
+            returnDemon(entrySide);
+            return;
+          }
+
+          const entryPositions = {
+            left: { left: -demon.offsetWidth, top: position.top },
+            right: { left: window.innerWidth, top: position.top },
+            top: { left: position.left, top: -demon.offsetHeight },
+            bottom: { left: position.left, top: window.innerHeight },
+          };
+          const entryPosition = entryPositions[entrySide];
+          setCharacterFacing(demon, entrySide === "left" ? 1 : entrySide === "right" ? -1 : 0);
+
+          demon.classList.remove("is-exiting");
+          demon.classList.add("is-returning");
+          demon.style.transition = "none";
+          demon.style.left = `${entryPosition.left}px`;
+          demon.style.top = `${entryPosition.top}px`;
+          void demon.offsetWidth;
+          demon.style.removeProperty("transition");
+
+          window.requestAnimationFrame(() => {
+            demon.style.left = `${position.left}px`;
+            demon.style.top = `${position.top}px`;
+          });
+
+          window.setTimeout(() => {
+            demon.classList.remove("is-returning");
+            demonHasExited = false;
+            walkDemon();
+          }, 650);
+        }, 1200);
+      }
+
       function walkDemon() {
         if (demonHasExited) return;
 
@@ -513,6 +542,7 @@
         if (availableMoves.length) {
           const move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
           demonDirection = { x: move.x, y: move.y };
+          setCharacterFacing(demon, move.x);
 
           if (move.exitSide) {
             demonHasExited = true;
@@ -521,6 +551,7 @@
             demon.classList.add("is-exiting");
             demon.style.left = `${move.exitSide === "left" ? -demon.offsetWidth : move.exitSide === "right" ? window.innerWidth : demon.offsetLeft}px`;
             demon.style.top = `${move.exitSide === "top" ? -demon.offsetHeight : move.exitSide === "bottom" ? window.innerHeight : demon.offsetTop}px`;
+            returnDemon(move.exitSide);
             return;
           }
 
@@ -530,29 +561,6 @@
         }
 
         window.setTimeout(walkDemon, 250 + Math.random() * 500);
-      }
-
-      function moveDemonWithScene(offsetX, offsetY) {
-        if (demonHasExited) return;
-
-        const maxLeft = Math.max(0, window.innerWidth - demon.offsetWidth);
-        const maxTop = Math.max(0, window.innerHeight - demon.offsetHeight);
-        const nextLeft = Math.min(maxLeft, Math.max(0, demon.offsetLeft - offsetX));
-        const nextTop = Math.min(maxTop, Math.max(0, demon.offsetTop - offsetY));
-
-        if (canHeroOccupy(nextLeft, nextTop)) {
-          animateDemonStep();
-          demon.style.left = `${nextLeft}px`;
-          demon.style.top = `${nextTop}px`;
-          return;
-        }
-
-        const nearestPosition = findNearestWalkablePosition(nextLeft, nextTop);
-        if (!nearestPosition) return;
-
-        animateDemonStep();
-        demon.style.left = `${nearestPosition.left}px`;
-        demon.style.top = `${nearestPosition.top}px`;
       }
 
       function clampHeroPosition() {
@@ -650,15 +658,15 @@
 
         scenePixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
         scenePixelRatio = canvas.width / window.innerWidth;
-        if (sceneTileWidth !== flowerTileWidth || sceneTileHeight !== flowerTileHeight) {
-          flowerTileWidth = sceneTileWidth;
-          flowerTileHeight = sceneTileHeight;
-          flowerPositions = Array.from(
-            { length: Math.ceil((flowerTileWidth * flowerTileHeight) / 24000) },
+        if (sceneTileWidth !== emojiTileWidth || sceneTileHeight !== emojiTileHeight) {
+          emojiTileWidth = sceneTileWidth;
+          emojiTileHeight = sceneTileHeight;
+          mazeEmojiPositions = Array.from(
+            { length: Math.ceil((emojiTileWidth * emojiTileHeight) / 24000) },
             () => ({
-              type: flowers[Math.floor(Math.random() * flowers.length)],
-              x: Math.random() * flowerTileWidth,
-              y: Math.random() * flowerTileHeight,
+              type: mazeEmojis[Math.floor(Math.random() * mazeEmojis.length)],
+              x: Math.random() * emojiTileWidth,
+              y: Math.random() * emojiTileHeight,
             }),
           );
         }
@@ -672,15 +680,17 @@
             const tileLeft = centerX - sceneTileWidth / 2;
             const tileTop = centerY - sceneTileHeight / 2;
 
-            for (const flower of flowerPositions) {
-              const x = tileLeft + flower.x;
-              const y = tileTop + flower.y;
-              if (x < 10 || y < 10 || x > width - 10 || y > height - 10 || !isLightGreenAt(x, y)) {
+            for (const item of mazeEmojiPositions) {
+              const x = tileLeft + item.x;
+              const y = tileTop + item.y;
+              const isFood = foodEmojis.has(item.type[0]);
+              const isAllowedSurface = isFood ? isDarkGreenAt(x, y) : isLightGreenAt(x, y);
+              if (x < 10 || y < 10 || x > width - 10 || y > height - 10 || !isAllowedSurface) {
                 continue;
               }
 
-              context.font = `${flower.type[1]}px "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
-              context.fillText(flower.type[0], x, y);
+              context.font = `${item.type[1]}px "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
+              context.fillText(item.type[0], x, y);
             }
           }
         }
@@ -705,8 +715,12 @@
           0,
           Math.min(maxTop, heroCenterY - movementDirection.y * followGap - ghost.offsetHeight / 2),
         );
-        ghostPosition.x = Math.max(0, Math.min(maxLeft, ghostPosition.x + (targetX - ghostPosition.x) * 0.0125));
-        ghostPosition.y = Math.max(0, Math.min(maxTop, ghostPosition.y + (targetY - ghostPosition.y) * 0.0125));
+        const horizontalDirection = targetX - ghostPosition.x;
+        if (horizontalDirection !== 0) {
+          ghost.style.transform = horizontalDirection > 0 ? "scaleX(-1)" : "scaleX(1)";
+        }
+        ghostPosition.x = Math.max(0, Math.min(maxLeft, ghostPosition.x + (targetX - ghostPosition.x) * 0.004));
+        ghostPosition.y = Math.max(0, Math.min(maxTop, ghostPosition.y + (targetY - ghostPosition.y) * 0.004));
         ghost.style.left = `${ghostPosition.x}px`;
         ghost.style.top = `${ghostPosition.y}px`;
         window.requestAnimationFrame(updateGhostPosition);
@@ -756,11 +770,12 @@
             return;
           }
 
+          moveWorldActorsWithScene(movement[0], movement[1]);
           movementKeys.add(event.key);
           hero.classList.add("is-walking");
+          setCharacterFacing(hero, movement[0]);
           movementDirection.x = movement[0] / movementStep;
           movementDirection.y = movement[1] / movementStep;
-          moveDemonWithScene(movement[0], movement[1]);
           window.dispatchEvent(new Event("scene-hero-moving"));
           return;
         }
@@ -769,6 +784,7 @@
 
         movementKeys.add(event.key);
         hero.classList.add("is-walking");
+        setCharacterFacing(hero, movement[0]);
         movementDirection.x = movement[0] / movementStep;
         movementDirection.y = movement[1] / movementStep;
         hero.style.left = `${nextLeft}px`;
@@ -808,12 +824,23 @@
         hasPlacedDemon = true;
         window.setTimeout(walkDemon, 350);
       }
+      const occupiedCharacters = [demon];
+      for (const character of roamingCharacters) {
+        const position = findRandomDemonPosition(character, occupiedCharacters);
+        if (!position) continue;
+
+        character.style.left = `${position.left}px`;
+        character.style.top = `${position.top}px`;
+        occupiedCharacters.push(character);
+        window.setTimeout(() => walkCharacter(character), 350 + Math.random() * 500);
+      }
     </script>
     <script type="module">
       import * as Tone from "https://cdn.jsdelivr.net/npm/tone@15.1.22/+esm";
       import { Midi } from "https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.28/+esm";
 
       const fallbackMidiFiles = ["ACKER-GS.MID", "AME_KISS.MID", "ANTICI.MID", "BOMB.MID"];
+      const lastMidiStorageKey = "scene-1-last-midi";
       let isStarting = false;
       let hasStarted = false;
 
@@ -842,6 +869,23 @@
         const audioReady = Tone.start();
         await audioReady;
         const fileNames = await getSortedMidiFiles();
+        let lastPlayedFile = null;
+
+        try {
+          lastPlayedFile = localStorage.getItem(lastMidiStorageKey);
+        } catch (error) {
+          console.warn("Could not read the previously played MIDI file.", error);
+        }
+
+        for (let index = fileNames.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [fileNames[index], fileNames[randomIndex]] = [fileNames[randomIndex], fileNames[index]];
+        }
+
+        if (fileNames.length > 1 && lastPlayedFile) {
+          const lastPlayedIndex = fileNames.indexOf(lastPlayedFile);
+          if (lastPlayedIndex >= 0) fileNames.push(fileNames.splice(lastPlayedIndex, 1)[0]);
+        }
 
         for (const fileName of fileNames) {
           try {
@@ -860,6 +904,12 @@
 
             for (const note of notes) {
               synth.triggerAttackRelease(note.name, Math.max(0.05, note.duration), startAt + note.time, note.velocity);
+            }
+
+            try {
+              localStorage.setItem(lastMidiStorageKey, fileName);
+            } catch (error) {
+              console.warn("Could not remember the played MIDI file.", error);
             }
 
             hasStarted = true;

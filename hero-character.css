@@ -1,0 +1,178 @@
+.hero-mini {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.75rem;
+  width: 150px;
+  height: 140px;
+  pointer-events: none;
+  font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  filter: drop-shadow(0 12px 16px rgba(17, 44, 81, 0.22));
+  animation: heroFloat 2.8s ease-in-out infinite;
+}
+
+.hero-mini span {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.hero-mini-art {
+  position: relative;
+  width: 150px;
+  height: 140px;
+}
+
+.hero-head {
+  left: 46px;
+  top: 6px;
+  font-size: 3rem;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.hero-arm {
+  top: 38px;
+  font-size: 2.1rem;
+  z-index: 3;
+  transition: transform 0.45s ease;
+}
+
+.hero-hand-left {
+  top: 58px;
+  left: -1px;
+  transform: rotate(-22deg);
+}
+
+.hero-hand-right {
+  top: 58px;
+  right: -1px;
+  transform: scaleX(-1) rotate(-22deg);
+}
+
+.hero-limb {
+  top: 47px;
+  font-size: 2.5rem;
+  color: #f7d54a;
+  transform-origin: top center;
+  z-index: 2;
+  transition: transform 0.45s ease;
+}
+
+.hero-limb-left {
+  left: 46px;
+  transform: rotate(42deg);
+}
+
+.hero-limb-right {
+  right: 46px;
+  transform: rotate(-42deg);
+}
+
+.hero-body {
+  left: 55px;
+  top: 40px;
+  font-size: 2.5rem;
+  color: var(--hero-outfit-color, #5f666e);
+  z-index: 1;
+  transform: rotate(2deg);
+}
+
+.hero-hips {
+  left: 65px;
+  top: 79px;
+  font-size: 1.8rem;
+  color: var(--hero-lower-body-color, #062549);
+}
+
+.hero-leg {
+  top: 90px;
+  font-size: 2.5rem;
+  color: var(--hero-lower-body-color, #062549);
+  transform-origin: 50% 0;
+  transition: transform 0.24s ease;
+}
+
+.hero-leg-left {
+  left: 56px;
+  transform: rotate(16deg);
+}
+
+.hero-leg-right {
+  right: 53px;
+  transform: rotate(-16deg);
+}
+
+.hero-shoe {
+  top: 120px;
+  font-size: 1.8rem;
+  translate: 0 0;
+  rotate: 0deg;
+}
+
+.hero-mini.is-facing-left .hero-shoe {
+  transform: scaleX(-1);
+}
+
+.hero-shoe-emoji {
+  position: static !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.hero-shoe-left {
+  left: 42px;
+}
+
+.hero-shoe-right {
+  right: 38px;
+}
+
+.hero-mini.is-walking .hero-leg-left {
+  animation: walkLeftLeg 0.24s ease-in-out infinite alternate;
+}
+
+.hero-mini.is-walking .hero-leg-right {
+  animation: walkRightLeg 0.24s ease-in-out infinite alternate;
+}
+
+.hero-mini.is-walking .hero-shoe-left {
+  animation: walkLeftFoot 0.24s ease-in-out infinite alternate;
+}
+
+.hero-mini.is-walking .hero-shoe-right {
+  animation: walkRightFoot 0.24s ease-in-out infinite alternate;
+}
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@keyframes walkLeftLeg {
+  from {  transform: rotate(36deg) translateX(10px); }
+  to {  transform: rotate(-38deg) translateX(20px); }
+}
+
+@keyframes walkRightLeg {
+  from {  transform: rotate(-36deg) translateX(10px); }
+  to {  transform: rotate(38deg) translateX(-20px); }
+}
+
+@keyframes walkLeftFoot {
+  from { translate: 10px 0; rotate: 36deg; }
+  to { translate: 20px 0; rotate: -38deg; }
+}
+
+@keyframes walkRightFoot {
+  from { translate: 10px 0; rotate: -36deg; }
+  to { translate: -20px 0; rotate: 38deg; }
+}

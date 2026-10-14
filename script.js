@@ -139,6 +139,7 @@ function animateHeroCharacter() {
   window.setInterval(showNextPose, 1800);
 }
 
+new HeroCharacter().mount(document.querySelector('.page-shell'));
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 animateHeroCharacter();

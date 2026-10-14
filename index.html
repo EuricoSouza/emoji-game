@@ -8,26 +8,13 @@
       name="description"
       content="Landing page for experimental javascript web game vibe coding studing and development using emojis and unicode as graphic elements"
     />
+    <link rel="stylesheet" href="hero-character.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
     <div class="page-shell">
-        <div class="hero-mini" aria-label="Emoji hero character" aria-hidden="true">
-          <span class="hero-limb hero-limb-left">❙</span>
-          <span class="hero-limb hero-limb-right">❙</span>
-          <span class="hero-arm hero-hand-left">🤛</span>
-          <span class="hero-arm hero-hand-right">🤛</span>
-          <span class="hero-head">🙂</span>
-          <span class="hero-body">▮</span>
-          <span class="hero-hips">▀</span>
-          <span class="hero-leg hero-leg-left">❚</span>
-          <span class="hero-leg hero-leg-right">❚</span>
-          <span class="hero-shoe hero-shoe-left">👟</span>
-          <span class="hero-shoe hero-shoe-right">👟</span>
-        </div>
-
       <header class="site-header">
         <nav class="menu" aria-label="Main navigation">
           <a href="#demoscenes">demoscenes</a>
@@ -133,6 +120,7 @@
       </section>
     </div>
 
+    <script src="hero-character.js"></script>
     <script src="script.js"></script>
     <script type="module" src="midi-player.js"></script>
   </body>

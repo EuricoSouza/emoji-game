@@ -16,12 +16,31 @@
 
     <div class="page-shell">
       <header class="site-header">
-        <nav class="menu" aria-label="Main navigation">
-          <a href="#demoscenes">demoscenes</a>
-          <a href="#the-game">the game</a>
-          <a href="#history">history</a>
-          <a href="#contact-me">contact me</a>
-        </nav>
+        <section class="status-bar" aria-label="Status bar">
+          <div class="dashboard-stat">
+            <span class="dashboard-icon" aria-hidden="true">🏃‍♂️</span>
+            <span class="dashboard-copy">
+              <strong class="dashboard-value">Player 1</strong>
+            </span>
+          </div>
+          <div class="dashboard-stat">
+            <span class="dashboard-icon" aria-hidden="true">🏆</span>
+            <span class="dashboard-copy">
+              <strong class="dashboard-value">00</strong>
+            </span>
+          </div>
+          <div class="dashboard-stat">
+            <span class="dashboard-copy">
+              <span class="dashboard-value dashboard-hearts" role="img" aria-label="3 of 3 health">❤️❤️❤️</span>
+            </span>
+          </div>
+          <div class="dashboard-stat">
+            <span class="dashboard-icon" aria-hidden="true">✊</span>
+            <span class="dashboard-copy">
+              <strong class="dashboard-value">None</strong>
+            </span>
+          </div>
+        </section>
       </header>
 
       <main class="hero">
@@ -118,10 +137,17 @@
         <ol id="midi-playlist" class="midi-playlist" aria-label="MIDI playlist"></ol>
         <p id="midi-status" class="midi-status" role="status" aria-live="polite">Add MIDI files or provide a midi/playlist.json manifest.</p>
       </section>
+      <a class="radio-shortcut" href="#midi-title" aria-label="Go to the MIDI radio player" title="Go to the MIDI radio player">🔘</a>
+      <div class="direction-pad" role="group" aria-label="Player movement controls">
+        <button class="direction-button direction-up" type="button" data-direction="up" aria-label="Move player up">⬆️</button>
+        <button class="direction-button direction-left" type="button" data-direction="left" aria-label="Move player left">⬅️</button>
+        <button class="direction-button direction-down" type="button" data-direction="down" aria-label="Move player down">⬇️</button>
+        <button class="direction-button direction-right" type="button" data-direction="right" aria-label="Move player right">➡️</button>
+      </div>
     </div>
 
     <script src="hero-character.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=3"></script>
     <script type="module" src="midi-player.js"></script>
   </body>
 </html>

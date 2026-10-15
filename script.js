@@ -66,16 +66,8 @@ function drawBackground(time) {
 
   const sunX = window.innerWidth * 0.85;
   const sunY = window.innerHeight * 0.18;
-  const sunGlow = ctx.createRadialGradient(sunX, sunY, 15, sunX, sunY, 130);
-  sunGlow.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-  sunGlow.addColorStop(0.2, 'rgba(247, 213, 74, 0.8)');
-  sunGlow.addColorStop(1, 'rgba(247, 213, 74, 0)');
-  ctx.fillStyle = sunGlow;
-  ctx.beginPath();
-  ctx.arc(sunX, sunY, 130, 0, Math.PI * 2);
-  ctx.fill();
-
-  drawEmoji(sunX, sunY + 3, 54, '☀️', 0.92);
+  const saucerY = sunY + Math.sin(time * 0.0018) * 8;
+  drawEmoji(sunX, saucerY, 64, '🛸', 0.96);
 
   for (const star of stars) {
     const twinkle = 0.6 + Math.sin(time * 0.0018 + star.phase) * 0.5;
@@ -139,7 +131,80 @@ function animateHeroCharacter() {
   window.setInterval(showNextPose, 1800);
 }
 
-new HeroCharacter().mount(document.querySelector('.page-shell'));
+function setupDirectionalPad() {
+  const hero = document.querySelector('#demoscenes .hero-mini');
+  const pad = document.querySelector('.direction-pad');
+  if (!hero || !pad) return;
+
+  const offsets = { x: 0, y: 0 };
+  const movementStep = 10;
+  const movement = {
+    up: { x: 0, y: -movementStep },
+    down: { x: 0, y: movementStep },
+    left: { x: -movementStep, y: 0 },
+    right: { x: movementStep, y: 0 },
+  };
+  const keyboardMovement = {
+    ArrowUp: movement.up,
+    ArrowDown: movement.down,
+    ArrowLeft: movement.left,
+    ArrowRight: movement.right,
+  };
+  const heldKeys = new Set();
+  let walkTimer;
+
+  function moveHero(step) {
+    offsets.x += step.x;
+    offsets.y += step.y;
+
+    const minX = -hero.offsetLeft;
+    const maxX = Math.max(minX, hero.parentElement.clientWidth - hero.offsetLeft - hero.offsetWidth);
+    offsets.x = Math.max(minX, Math.min(maxX, offsets.x));
+    offsets.y = Math.max(-64, Math.min(64, offsets.y));
+
+    hero.style.transform = `translate(${offsets.x}px, ${offsets.y}px)`;
+    if (step.x !== 0) hero.classList.toggle('is-facing-left', step.x < 0);
+  }
+
+  function stopWalking() {
+    if (heldKeys.size === 0) hero.classList.remove('is-walking');
+  }
+
+  document.addEventListener('keydown', (event) => {
+    const step = keyboardMovement[event.key];
+    if (!step) return;
+
+    event.preventDefault();
+    heldKeys.add(event.key);
+    window.clearTimeout(walkTimer);
+    moveHero(step);
+    hero.classList.add('is-walking');
+  });
+
+  document.addEventListener('keyup', (event) => {
+    if (!keyboardMovement[event.key]) return;
+    heldKeys.delete(event.key);
+    stopWalking();
+  });
+
+  window.addEventListener('blur', () => {
+    heldKeys.clear();
+    hero.classList.remove('is-walking');
+  });
+
+  pad.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-direction]');
+    if (!button) return;
+
+    moveHero(movement[button.dataset.direction]);
+    hero.classList.add('is-walking');
+    window.clearTimeout(walkTimer);
+    walkTimer = window.setTimeout(stopWalking, 240);
+  });
+}
+
+new HeroCharacter().mount(document.querySelector('#demoscenes'));
+setupDirectionalPad();
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 animateHeroCharacter();
